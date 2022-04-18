@@ -9,7 +9,7 @@
 
 
 void main_loop();
-char *read_input(void);
+char *read_input();
 
 int main(int argc, char **argv)
 {
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
   return EXIT_SUCCESS;
 }
 
-void main_loop(void)
+void main_loop()
 {
   char *line;
   char **args;
@@ -41,41 +41,24 @@ void main_loop(void)
   } while (status);
 }
 
-char *read_input(void)
+char *read_input()
 {
-  int size = BUFFSIZE;
-  int position = 0;
-  char *buffer = malloc(sizeof(char) * size);
+  char *line = NULL;
+  ssize_t size = 0;
 
-  // Needs to be an int to check for EOF
-  int character;
+  if (getline(&line, &size, stdin) == -1){
 
-  if (!buffer) {
-    fprintf(stderr, "unishell: allocation error\n");
-    exit(EXIT_FAILURE);
-  }
-
-  while (1) {
-    // Read a character
-    character = getchar();
-
-    // If we hit EOF (End of File, like ctrl+D), replace it with a null character and return.
-    if (character == EOF || character == '\n') {
-      buffer[position] = '\0';
-      return buffer;
-    } else {
-      buffer[position] = character;
-    }
-    position++;
-
-    // If we have exceeded the buffer, reallocate.
-    if (position >= size) {
-      size += BUFFSIZE;
-      buffer = realloc(buffer, size);
-      if (!buffer) {
-        fprintf(stderr, "lsh: allocation error\n");
-        exit(EXIT_FAILURE);
-      }
+    // Look for EOF (End of File)
+    if (feof(stdin)) {
+      exit(EXIT_SUCCESS); 
+    } 
+    // Something went wrong
+    else  
+    {
+      perror("readline");
+      exit(EXIT_FAILURE);
     }
   }
+
+  return line;
 }

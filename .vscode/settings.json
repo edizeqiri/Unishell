@@ -4,6 +4,9 @@
         "string_view": "c",
         "initializer_list": "c",
         "utility": "c",
-        "random": "c"
+        "random": "c",
+        "*.tcc": "c",
+        "string": "c",
+        "streambuf": "c"
     }
 }
