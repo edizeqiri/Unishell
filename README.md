@@ -1,2 +1,2 @@
 # Unishell
- The best shell of a CS student
+ The best shell for a CS student
