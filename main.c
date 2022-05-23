@@ -162,7 +162,7 @@ int execute(char **args) {
 int us_cd(char **args)
 {
   if (args[1] == NULL) {
-    fprintf(stderr, "Unishell: expected argument to \"us_cd\"\n");
+    fprintf(stderr, "Unishell: expected argument to \"cd\"\n");
   } else {
     if (chdir(args[1]) != 0) {
       perror("Unishell");
