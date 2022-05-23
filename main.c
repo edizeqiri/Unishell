@@ -113,6 +113,18 @@ char **split_input(char *line) {
  * @return int if failure or success
  */
 int execute(char **args) {
+
+  if (args[0] == NULL) {
+    // An empty command was entered.
+    return 1;
+  }
+
+  for (int i = 0; i < size_intern_strings(); i++) {
+    if (strcmp(args[0], intern_strings[i]) == 0) {
+      return (*intern_func[i])(args);
+    }
+  }
+
   pid_t pid, wait_pid;
   int status;
 
@@ -173,11 +185,22 @@ int us_exit(char **args)
 int us_help(char **args)
 {
   int i;
+  printf("\n==============================================================\n");
+  printf(" /$$   /$$           /$$           /$$                 /$$ /$$\n\
+| $$  | $$          |__/          | $$                | $$| $$\n\
+| $$  | $$ /$$$$$$$  /$$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$| $$\n\
+| $$  | $$| $$__  $$| $$ /$$_____/| $$__  $$ /$$__  $$| $$| $$\n\
+| $$  | $$| $$  \\ $$| $$|  $$$$$$ | $$  \\ $$| $$$$$$$$| $$| $$\n\
+| $$  | $$| $$  | $$| $$ \\____  $$| $$  | $$| $$_____/| $$| $$\n\
+|  $$$$$$/| $$  | $$| $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$| $$\n\
+ \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n");
+ printf("==============================================================\n");
   printf("\n|=========================================================================|\n");
   printf("|                   Unishell from students for students                   |\n");
   printf("|  Our improved shell will make you feel like learning could never stop!  |\n");
   printf("|                     The following are built in:                         |\n");
   printf("|=========================================================================|\n \n");
+  
 
   for (i = 0; i < size_intern_strings(); i++) {
     printf("|%d.  %s\n",i+1 , intern_strings[i]);
