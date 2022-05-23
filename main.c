@@ -5,8 +5,15 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TOKEN_BUFFSIZE 64
+#define TOKEN_DELIMS " \t\r\n\a"
+
+int main(int argc, char **argv);
 void main_loop();
 char *read_input();
+void error_exiter(char *trigger);
+char **split_input(char *line);
+int execute(char **args);
 
 int main(int argc, char **argv)
 {
@@ -20,6 +27,12 @@ int main(int argc, char **argv)
   return EXIT_SUCCESS;
 }
 
+/**
+ * @brief Main loop of the shell which does 3 things.
+ * 1. Get input and store it into a string
+ * 2. Parse the input
+ * 3. Execute the input 
+ */
 void main_loop()
 {
   char *line;
@@ -38,6 +51,11 @@ void main_loop()
   } while (status);
 }
 
+/**
+ * @brief Store input into a buffer which then gets saved into a String
+ * 
+ * @return char* input line
+ */
 char *read_input()
 {
   char *line = NULL;
@@ -69,8 +87,15 @@ if (!trigger) {
   }
 }
 
-#define TOKEN_BUFFSIZE 64
-#define TOKEN_DELIMS " \t\r\n\a"
+
+
+/**
+ * @brief Splits input from the whole string into "words" and saves it into string array
+ * e.g "I love honey" => ["I", "love", "honey"]
+ * 
+ * @param line input string
+ * @return char** string array containing words
+ */
 char **split_input(char *line) {
 
   int bufsize = TOKEN_BUFFSIZE, index = 0;
@@ -100,4 +125,35 @@ char **split_input(char *line) {
   }
   tokens[index] = NULL;
   return tokens;
+}
+
+/**
+ * @brief Executes given commands and returns if it worked.
+ * 
+ * @param args string array from split_input
+ * @return int if failure or success
+ */
+int execute(char **args)
+{
+  pid_t pid, wpid;
+  int status;
+
+  pid = fork();
+  if (pid == 0) {
+    // Child process
+    if (execvp(args[0], args) == -1) {
+      perror("lsh");
+    }
+    exit(EXIT_FAILURE);
+  } else if (pid < 0) {
+    // Error forking
+    perror("lsh");
+  } else {
+    // Parent process
+    do {
+      wpid = waitpid(pid, &status, WUNTRACED);
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+  }
+
+  return 1;
 }
