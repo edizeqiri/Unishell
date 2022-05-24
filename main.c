@@ -5,6 +5,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <pwd.h>
+#include <limits.h>
+
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
 
 #define TOKEN_BUFFSIZE 64
 #define TOKEN_DELIMS " \t\r\n\a"
@@ -206,7 +216,7 @@ int us_help(char **args)
 {
 
   int i;
-  printf("\n==============================================================\n");
+  printf(GRN"\n==============================================================\n"CYN);
   printf(" /$$   /$$           /$$           /$$                 /$$ /$$\n\
 | $$  | $$          |__/          | $$                | $$| $$\n\
 | $$  | $$ /$$$$$$$  /$$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$| $$\n\
@@ -214,12 +224,12 @@ int us_help(char **args)
 | $$  | $$| $$  \\ $$| $$|  $$$$$$ | $$  \\ $$| $$$$$$$$| $$| $$\n\
 | $$  | $$| $$  | $$| $$ \\____  $$| $$  | $$| $$_____/| $$| $$\n\
 |  $$$$$$/| $$  | $$| $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$| $$\n\
- \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n");
+ \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n"GRN);
  printf("==============================================================\n");
-  printf("\n|=========================================================================|\n");
-  printf("|                   Unishell from students for students                   |\n");
-  printf("|  Our improved shell will make you feel like learning could never stop!  |\n");
-  printf("|                     Happy learning ( ˘ ³˘)♥                             |\n", getusername());
+  printf(GRN"\n|=========================================================================|\n");
+  printf("|"CYN"                   Unishell from students for students                   "GRN"|\n");
+  printf("|"CYN"  Our improved shell will make you feel like learning could never stop!  "GRN"|\n");
+  printf("|"CYN"                     Happy learning "RED"( ˘ ³˘)♥"GRN"                             "GRN"|\n", getusername());
   printf("|=========================================================================|\n \n");
   
   return 1;
@@ -238,10 +248,17 @@ void main_loop()
   char **args;
   int status;
 
+  char cwd[PATH_MAX];
+  char hostname[HOST_NAME_MAX];
+
+  getcwd(cwd, sizeof(cwd));
+  gethostname(hostname, HOST_NAME_MAX);
+
+
   us_help(NULL);
   // While status is good (0) read-split into args-execute
   do {
-    printf("%s, The Emperor of Learnign => ", getusername());
+    printf(GRN"(" YEL"%s"GRN"@" RED"%s"GRN")-"CYN"[%s]" GRN "-$ ",hostname, getusername(),cwd);
     line = read_input();
     args = split_input(line);
     status = execute(args);
