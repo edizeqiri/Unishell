@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <pwd.h>
 
 #define TOKEN_BUFFSIZE 64
 #define TOKEN_DELIMS " \t\r\n\a"
@@ -11,6 +12,7 @@
 int us_cd(char **args);
 int us_help(char **args);
 int us_exit(char **args);
+char *getusername();
 
 char *intern_strings[] = {
   "cd",
@@ -119,6 +121,11 @@ int execute(char **args) {
     return 1;
   }
 
+  if (strcmp(args[0],"14") == 0) {
+    printf("Imagine giving students an exercise sheet with only 14 pages and not 21.\n");
+    return 1;
+  }
+
   for (int i = 0; i < size_intern_strings(); i++) {
     if (strcmp(args[0], intern_strings[i]) == 0) {
       return (*intern_func[i])(args);
@@ -135,12 +142,12 @@ int execute(char **args) {
 
     // v for vector and p to let OS find program and not give full path
     if (execvp(args[0], args) == -1) {
-      perror("Unishell");
+      perror("Unishell ( ͡ಠ ʖ̯ ͡ಠ )");
     }
     exit(EXIT_FAILURE);
   } else if (pid < 0) {
     // Error forking
-    perror("Unishell");
+    perror("Unishell （　ﾟДﾟ）");
   } else {
     
     // if parent
@@ -165,7 +172,7 @@ int us_cd(char **args)
     fprintf(stderr, "Unishell: expected argument to \"cd\"\n");
   } else {
     if (chdir(args[1]) != 0) {
-      perror("Unishell");
+      perror("Unishell (╬ ಠ益ಠ)");
     }
   }
   return 1;
@@ -182,8 +189,22 @@ int us_exit(char **args)
   return 0;
 }
 
+/**
+ * @brief gets username of OS user
+ * 
+ * @return char* the username
+ */
+char *getusername() {
+  char *name; 
+  struct passwd *pass; 
+  pass = getpwuid(getuid()); 
+  name = pass->pw_name;
+  return name;
+}
+
 int us_help(char **args)
 {
+
   int i;
   printf("\n==============================================================\n");
   printf(" /$$   /$$           /$$           /$$                 /$$ /$$\n\
@@ -198,14 +219,9 @@ int us_help(char **args)
   printf("\n|=========================================================================|\n");
   printf("|                   Unishell from students for students                   |\n");
   printf("|  Our improved shell will make you feel like learning could never stop!  |\n");
-  printf("|                     The following are built in:                         |\n");
+  printf("|                     Happy learning ( ˘ ³˘)♥                             |\n", getusername());
   printf("|=========================================================================|\n \n");
   
-
-  for (i = 0; i < size_intern_strings(); i++) {
-    printf("|%d.  %s\n",i+1 , intern_strings[i]);
-  }
-
   return 1;
 }
 
@@ -225,7 +241,7 @@ void main_loop()
   us_help(NULL);
   // While status is good (0) read-split into args-execute
   do {
-    printf("=> ");
+    printf("%s, The Emperor of Learnign => ", getusername());
     line = read_input();
     args = split_input(line);
     status = execute(args);
@@ -235,6 +251,7 @@ void main_loop()
   } while (status);
 }
 
+
 int main(int argc, char **argv)
 {
   // Load config files, if any.
@@ -243,7 +260,7 @@ int main(int argc, char **argv)
   main_loop();
 
 
-
+  printf("See you later alligator!");
   // Perform any shutdown/cleanup.
 
   return EXIT_SUCCESS;
