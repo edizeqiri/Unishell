@@ -248,17 +248,18 @@ void main_loop()
   char **args;
   int status;
 
+  // get pc name and username
   char cwd[PATH_MAX];
   char hostname[HOST_NAME_MAX];
-
   getcwd(cwd, sizeof(cwd));
   gethostname(hostname, HOST_NAME_MAX);
 
 
   us_help(NULL);
+
   // While status is good (0) read-split into args-execute
   do {
-    printf(GRN"(" YEL"%s"GRN"@" RED"%s"GRN")-"CYN"[%s]" GRN "-$ ",hostname, getusername(),cwd);
+    printf(GRN"┌──("YEL"%s"CYN"@" RED"%s"GRN")-"CYN"[%s]" GRN "\n└─"CYN"$ ",hostname, getusername(),cwd);
     line = read_input();
     args = split_input(line);
     status = execute(args);
