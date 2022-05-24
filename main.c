@@ -259,7 +259,7 @@ void main_loop()
 
   // While status is good (0) read-split into args-execute
   do {
-    printf(GRN"┌──("YEL"%s"CYN"@" RED"%s"GRN")-"CYN"[%s]" GRN "\n└─"CYN"$ ",hostname, getusername(),cwd);
+    printf(GRN"┌──("YEL"%s"CYN"@" RED"%s"GRN")-"GRN"["CYN"%s"GRN"]" GRN "\n└─"CYN"$ ",hostname, getusername(),cwd);
     line = read_input();
     args = split_input(line);
     status = execute(args);
