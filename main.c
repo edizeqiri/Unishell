@@ -227,7 +227,7 @@ int us_help(char **args)
  \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n"GRN);
  printf("==============================================================\n");
   printf(GRN"\n|=========================================================================|\n");
-  printf("|"CYN"                   Unishell from students for students                   "GRN"|\n");
+  printf("|"CYN"                 The Unishell for students from students                 "GRN"|\n");
   printf("|"CYN"  Our improved shell will make you feel like learning could never stop!  "GRN"|\n");
   printf("|"CYN"                     Happy learning "RED"( ˘ ³˘)♥"GRN"                             "GRN"|\n", getusername());
   printf("|=========================================================================|\n \n");
