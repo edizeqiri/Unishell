@@ -9,9 +9,14 @@
 
 ## Functionality
 
-- `cd`, `help` and `exit` are explicit functions. All other things get executed by the OS with the given parameters.
+- `cd`: Change current Directory
+- `help`: Helper function
+- `exit`: Exit shell 
+- `Unimode`: Start your learning journey here!
+- `Pomodoro`: Starts a Pomodoro timer.
 
-- Arguments only get parsed if they are seperated by whitespace. This means that ``""`` does not chain input but will straight up be ignored.
+All other things get executed by the OS with the given parameters.
+Arguments only get parsed if they are seperated by whitespace. This means that ``""`` does not chain input but will straight up be ignored.
 
 ## TODOs
 
