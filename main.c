@@ -132,7 +132,7 @@ int execute(char **args) {
   }
 
   if (strcmp(args[0],"14") == 0) {
-    printf("Imagine giving students an exercise sheet with only 14 pages and not 21.\n");
+    printf("( ͡ಠ ʖ̯ ͡ಠ ) Imagine giving students an exercise sheet with only 14 pages and not 21. \n \n");
     return 1;
   }
 

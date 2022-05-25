@@ -16,8 +16,11 @@
 ## TODOs
 
 - [ ] Unimode
+    - idea is to make a copy of ``/etc/hosts/`` and then change every "bad" site (e.g. facebook, instagram,...) to ``127.0.0.1`` so that user can't access it.
 - [ ] config file
 - [ ] installation process (start a script which generates all the needed things for Unimode)
-- [ ] Minigames
+    - config file
+    - ...
+- [ ] Minigames and 
 
 
