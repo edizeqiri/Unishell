@@ -30,6 +30,8 @@ void pomodoro(int learn_int, int pause_int);
 int learning = 0;
 int learn_int = 25;
 int pause_int = 5;
+int intervals = 6;
+int time_us = 0;
 
 char *intern_strings[] = {
     "cd",
@@ -161,8 +163,14 @@ int execute(char **args)
       printf("Usage ☜(⌒▽⌒)☞: Pomodoro [Learning Interval] [Pause Interval]\n");
       return 1;
     }
+    else if (args[1] != NULL && strcmp(args[1], "stop") == 0)
+    {
+      intervals = 0;
+    }
+
     else if (args[1] != NULL && args[2] != NULL)
     {
+      intervals = 6;
       if (scanf("%d", args[1]) && scanf("%d", args[2]))
       {
         pomodoro(atoi(args[1]), atoi(args[2]));
@@ -338,9 +346,45 @@ int unimode()
 
 void pomodoro(int learn_int, int pause_int)
 {
-  int pause = 0;
 
-  time_t start = clock();
+  pid_t pid, wait_pid;
+  int status;
+
+  pid = fork();
+
+  // if child
+  if (pid == 0)
+  {
+    int pause = 0;
+
+    time_t start = clock();
+
+    while (intervals > 0)
+    {
+
+      if (pause == 0)
+      {
+        time_us = ((clock() - start) * 1000) / CLOCKS_PER_SEC;
+        printf("\r%d",time_us/500);
+        if (time_us > learn_int * 60000)
+        {
+          pause = 1;
+          printf("You deserve a rest (づ￣ ³￣)づ");
+          start = clock();
+        }
+      }
+      else if (pause == 1)
+      {
+        if ((((clock() - start) * 1000) / CLOCKS_PER_SEC) > pause_int * 60000)
+        {
+          pause = 0;
+          intervals--;
+          printf("TIME TO LEARN YOU FOOL (ง '̀-'́)ง");
+          start = clock();
+        }
+      }
+    }
+  }
   return;
 }
 
@@ -359,7 +403,7 @@ void main_loop()
   // get pc name and username
   char cwd[PATH_MAX];
   char hostname[HOST_NAME_MAX];
-  getcwd(cwd, sizeof(cwd));
+
   gethostname(hostname, HOST_NAME_MAX);
 
   us_help(NULL);
@@ -367,7 +411,8 @@ void main_loop()
   // While status is good (0) read-split into args-execute
   do
   {
-    printf(GRN "┌──(" YEL "%s" CYN "@" RED "%s" GRN ")-" GRN "[" CYN "%s" GRN "]" GRN "\n└─" CYN "$ ", hostname, getusername(), cwd);
+    getcwd(cwd, sizeof(cwd));
+    printf(GRN "┌──(" YEL "%s" CYN "@" RED "%s" GRN ")-" GRN "[" CYN "%s" GRN "]-%d" GRN "\n└─" CYN "$ ", hostname, getusername(), cwd,time_us);
     line = read_input();
     args = split_input(line);
     status = execute(args);
