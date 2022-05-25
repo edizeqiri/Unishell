@@ -24,7 +24,7 @@ int us_help(char **args);
 int us_exit(char **args);
 char *getusername();
 int unimode();
-void pomodoro();
+void pomodoro(int learn_int, int pause_int);
 
 int learning = 0;
 
@@ -149,6 +149,28 @@ int execute(char **args)
   {
     learning = unimode();
     return 1;
+  }
+
+  if (strcmp(args[0], "Pomodoro") == 0 || strcmp(args[0], "pomodoro") == 0)
+  {
+    if (args[1] != NULL && strcmp(args[1], "-h") == 0)
+    {
+      printf("Usage ☜(⌒▽⌒)☞: Pomodoro [Learning Interval] [Pause Interval]\n");
+      return 1;
+    }
+    else if (args[1] != NULL && args[2] != NULL)
+    {
+      if (scanf("%d", args[1]) && scanf("%d", args[2]))
+      {
+        pomodoro(atoi(args[1]), atoi(args[2]));
+        return 1;
+      }
+    }
+    else
+    {
+      printf("Usage ☜(⌒▽⌒)☞: Pomodoro [-h] [Learning Interval] [Pause Interval]\n");
+      return 1;
+    }
   }
 
   for (int i = 0; i < size_intern_strings(); i++)
@@ -310,8 +332,9 @@ int unimode()
   return 1;
 }
 
-void pomodoro()
+void pomodoro(int learn_int, int pause_int)
 {
+  return;
 }
 
 /**
