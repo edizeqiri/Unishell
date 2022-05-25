@@ -6,6 +6,7 @@
 #include <string.h>
 #include <pwd.h>
 #include <limits.h>
+#include <time.h>
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -27,6 +28,8 @@ int unimode();
 void pomodoro(int learn_int, int pause_int);
 
 int learning = 0;
+int learn_int = 25;
+int pause_int = 5;
 
 char *intern_strings[] = {
     "cd",
@@ -168,7 +171,8 @@ int execute(char **args)
     }
     else
     {
-      printf("Usage ☜(⌒▽⌒)☞: Pomodoro [-h] [Learning Interval] [Pause Interval]\n");
+      printf("\nStarting Pomodoro with 25min learn and 5min pause interval ☜(⌒▽⌒)☞\n \n");
+      pomodoro(learn_int, pause_int);
       return 1;
     }
   }
@@ -334,6 +338,9 @@ int unimode()
 
 void pomodoro(int learn_int, int pause_int)
 {
+  int pause = 0;
+
+  time_t start = clock();
   return;
 }
 
