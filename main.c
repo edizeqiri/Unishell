@@ -23,6 +23,10 @@ int us_cd(char **args);
 int us_help(char **args);
 int us_exit(char **args);
 char *getusername();
+int unimode();
+void pomodoro();
+
+int learning = 0;
 
 char *intern_strings[] = {
   "cd",
@@ -47,8 +51,7 @@ int size_intern_strings() {
  * 
  * @return char* input line
  */
-char *read_input()
-{
+char *read_input() {
   char *line = NULL;
   ssize_t size = 0;
 
@@ -72,10 +75,10 @@ char *read_input()
 
 // us_helper function
 void error_exiter(char *trigger) {
-if (!trigger) {
-    fprintf(stderr, "What did you do?!\n");
-    exit(EXIT_FAILURE);
-  }
+  if (!trigger) {
+      fprintf(stderr, "What did you do?!\n");
+      exit(EXIT_FAILURE);
+    }
 }
 
 
@@ -136,6 +139,11 @@ int execute(char **args) {
     return 1;
   }
 
+  if (strcmp(args[0],"Unimode") == 0 ||strcmp(args[0],"unimode") == 0 ) {
+    learning = unimode();
+    return 1;
+  }
+
   for (int i = 0; i < size_intern_strings(); i++) {
     if (strcmp(args[0], intern_strings[i]) == 0) {
       return (*intern_func[i])(args);
@@ -176,8 +184,7 @@ int execute(char **args) {
  * @param args 
  * @return int 
  */
-int us_cd(char **args)
-{
+int us_cd(char **args) {
   if (args[1] == NULL) {
     fprintf(stderr, "Unishell: expected argument to \"cd\"\n");
   } else {
@@ -194,8 +201,7 @@ int us_cd(char **args)
  * @param args for convinience
  * @return int 
  */
-int us_exit(char **args)
-{
+int us_exit(char **args) {
   return 0;
 }
 
@@ -212,8 +218,7 @@ char *getusername() {
   return name;
 }
 
-int us_help(char **args)
-{
+int us_help(char **args) {
 
   int i;
   printf(GRN"\n==============================================================\n"CYN);
@@ -233,6 +238,28 @@ int us_help(char **args)
   printf("|=========================================================================|\n \n");
   
   return 1;
+}
+
+
+int unimode() {
+  // /etc/hosts
+    // make backup of hosts file hosts.old
+    // put in our host file
+  if (rename("/etc/hosts","/etc/hosts.old") != 0) {
+    perror("Unishell ಥ_ಥ");
+    return -1;
+  }
+
+  if (rename("hosts","/etc/hosts") != 0){
+    perror("Unishell ಥ_ಥ");
+    return -1;
+  }
+  return 1;
+  
+}
+
+void pomodoro() {
+
 }
 
 
