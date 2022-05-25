@@ -9,13 +9,18 @@
 
 ## Functionality
 
-- `cd`, `help` and `exit` are explicit functions. All other things get executed by the OS with the given parameters.
+- `cd`: Change current Directory
+- `help`: Helper function
+- `exit`: Exit shell 
+- `Unimode`: Start your learning journey here!
+- `Pomodoro`: Starts a Pomodoro timer.
 
-- Arguments only get parsed if they are seperated by whitespace. This means that ``""`` does not chain input but will straight up be ignored.
+All other things get executed by the OS with the given parameters.
+Arguments only get parsed if they are seperated by whitespace. This means that ``""`` does not chain input but will straight up be ignored.
 
 ## TODOs
 
-- [ ] Unimode
+- [x] Unimode
     - idea is to make a copy of ``/etc/hosts/`` and then change every "bad" site (e.g. facebook, instagram,...) to ``127.0.0.1`` so that user can't access it.
 - [ ] config file
 - [ ] installation process (start a script which generates all the needed things for Unimode)
