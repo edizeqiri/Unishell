@@ -6,7 +6,7 @@
 #include <string.h>
 #include <pwd.h>
 #include <limits.h>
-#include <time.h>
+
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -15,17 +15,8 @@
 #define MAG "\x1B[35m"
 #define CYN "\x1B[36m"
 #define WHT "\x1B[37m"
-#define RESET "\x1B[0m"
 
-#define TOKEN_BUFFSIZE 64
-#define TOKEN_DELIMS " \t\r\n\a"
-
-int us_cd(char **args);
-int us_help(char **args);
-int us_exit(char **args);
-char *getusername();
-int unimode();
-void pomodoro(int learn_int, int pause_int);
+#include "functions.h"
 
 int learning = 0;
 int learn_int = 25;
@@ -152,7 +143,7 @@ int execute(char **args)
 
   if (strcmp(args[0], "Unimode") == 0 || strcmp(args[0], "unimode") == 0)
   {
-    learning = unimode();
+    learning = unimode(learning);
     return 1;
   }
 
@@ -228,165 +219,6 @@ int execute(char **args)
   return 1;
 }
 
-/**
- * @brief change directory
- *
- * @param args
- * @return int
- */
-int us_cd(char **args)
-{
-  if (args[1] == NULL)
-  {
-    fprintf(stderr, "Unishell: expected argument to \"cd\"\n");
-  }
-  else
-  {
-    if (chdir(args[1]) != 0)
-    {
-      perror("Unishell (╬ ಠ益ಠ)");
-    }
-  }
-  return 1;
-}
-
-/**
- * @brief exit the shell duh
- *
- * @param args for convinience
- * @return int
- */
-int us_exit(char **args)
-{
-  return 0;
-}
-
-/**
- * @brief gets username of OS user
- *
- * @return char* the username
- */
-char *getusername()
-{
-  char *name;
-  struct passwd *pass;
-  pass = getpwuid(getuid());
-  name = pass->pw_name;
-  return name;
-}
-
-int us_help(char **args)
-{
-
-  int i;
-  printf(GRN "\n==============================================================\n" CYN);
-  printf(" /$$   /$$           /$$           /$$                 /$$ /$$\n\
-| $$  | $$          |__/          | $$                | $$| $$\n\
-| $$  | $$ /$$$$$$$  /$$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$| $$\n\
-| $$  | $$| $$__  $$| $$ /$$_____/| $$__  $$ /$$__  $$| $$| $$\n\
-| $$  | $$| $$  \\ $$| $$|  $$$$$$ | $$  \\ $$| $$$$$$$$| $$| $$\n\
-| $$  | $$| $$  | $$| $$ \\____  $$| $$  | $$| $$_____/| $$| $$\n\
-|  $$$$$$/| $$  | $$| $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$| $$\n\
- \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n" GRN);
-  printf("==============================================================\n");
-  printf(GRN "\n|=========================================================================|\n");
-  printf("|" CYN "                 The Unishell for students from students                 " GRN "|\n");
-  printf("|" CYN "  Our improved shell will make you feel like learning could never stop!  " GRN "|\n");
-  printf("|" CYN "                     Happy learning " RED "( ˘ ³˘)♥" GRN "                             " GRN "|\n", getusername());
-  printf("|=========================================================================|\n \n");
-
-  return 1;
-}
-
-int unimode()
-{
-
-  // if unimode off
-  if (learning == 0)
-  {
-    // /etc/hosts
-    // make backup of hosts file hosts.old
-    if (rename("/etc/hosts", "/etc/hosts.old") != 0)
-    {
-      perror("Unishell ಥ_ಥ");
-      return -1;
-    }
-
-    // put in our host file
-    if (rename("hosts", "/etc/hosts") != 0)
-    {
-      perror("Unishell ಥ_ಥ");
-      return -1;
-    }
-    printf("You have started the ZEN ᕙ(⇀‸↼)ᕗ\n");
-    printf("To leave The ZEN ᕙ(⇀‸↼)ᕗ just type the command 'Unishell' again.\n");
-  } // if unimode on
-  else
-  {
-
-    // revert changes
-    if (remove("/etc/hosts") != 0)
-    {
-      perror("Unishell ಥ_ಥ");
-      return -1;
-    }
-
-    if (rename("/etc/hosts.old", "/etc/hosts") != 0)
-    {
-      perror("Unishell ಥ_ಥ");
-      return -1;
-    }
-
-    printf("You have left The ZEN ᕙ(⇀‸↼)ᕗ\n");
-    printf("To start The ZEN ᕙ(⇀‸↼)ᕗ again just type the command 'Unishell'.\n");
-  }
-
-  return 1;
-}
-
-void pomodoro(int learn_int, int pause_int)
-{
-
-  pid_t pid, wait_pid;
-  int status;
-
-  pid = fork();
-
-  // if child
-  if (pid == 0)
-  {
-    int pause = 0;
-
-    time_t start = clock();
-
-    while (intervals > 0)
-    {
-
-      if (pause == 0)
-      {
-        time_us = ((clock() - start) * 1000) / CLOCKS_PER_SEC;
-        printf("\r%d",time_us/500);
-        if (time_us > learn_int * 60000)
-        {
-          pause = 1;
-          printf("You deserve a rest (づ￣ ³￣)づ");
-          start = clock();
-        }
-      }
-      else if (pause == 1)
-      {
-        if ((((clock() - start) * 1000) / CLOCKS_PER_SEC) > pause_int * 60000)
-        {
-          pause = 0;
-          intervals--;
-          printf("TIME TO LEARN YOU FOOL (ง '̀-'́)ง");
-          start = clock();
-        }
-      }
-    }
-  }
-  return;
-}
 
 /**
  * @brief Main loop of the shell which does 3 things.
@@ -412,7 +244,7 @@ void main_loop()
   do
   {
     getcwd(cwd, sizeof(cwd));
-    printf(GRN "┌──(" YEL "%s" CYN "@" RED "%s" GRN ")-" GRN "[" CYN "%s" GRN "]-%d" GRN "\n└─" CYN "$ ", hostname, getusername(), cwd,time_us);
+    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n            └─" CYN "₿ ", hostname, getusername(), cwd);
     line = read_input();
     args = split_input(line);
     status = execute(args);
