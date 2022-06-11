@@ -6,6 +6,7 @@ int us_help(char **args);
 int us_exit(char **args);
 int unimode(int learning);
 void pomodoro(int learn_int, int pause_int);
+char* get_ip(char *interface);
 char *getusername();
 
 #define RED   "\x1B[31m"

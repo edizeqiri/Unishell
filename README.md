@@ -21,6 +21,7 @@
 - `exit`: Exit shell 
 - `Unimode`: Start your learning journey here!
 - `Pomodoro`: Starts a Pomodoro timer.
+- `interface [ip_interface]`: Change which interface to use.
 
 All other things get executed by the OS with the given parameters.
 Arguments only get parsed if they are seperated by whitespace. This means that ``""`` does not chain input but will straight up be ignored.

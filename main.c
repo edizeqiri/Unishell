@@ -6,7 +6,7 @@
 #include <string.h>
 #include <pwd.h>
 #include <limits.h>
-
+#include <ifaddrs.h>
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -23,6 +23,7 @@ int learn_int = 25;
 int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
+char *ip = "eth0";
 
 char *intern_strings[] = {
     "cd",
@@ -135,18 +136,47 @@ int execute(char **args)
     return 1;
   }
 
+  if (strcmp(args[0], "interface") == 0 && args[1] != NULL)
+  {
+    if (strcmp(args[1], "tun0") == 0)
+    {
+      ip = "tun0";
+    }
+    else if (strcmp(args[1], "wlan0") == 0)
+    {
+      ip = "wlan0";
+    }
+    else if (strcmp(args[1], "lo") == 0)
+    {
+      ip = "lo";
+    }
+    else if (strcmp(args[1], "eth0") == 0)
+    {
+      ip = "eth0";
+    }
+    else
+    {
+      fprintf(stderr, "Unknown interface.\n");
+      return 1;
+    }
+    return 1;
+  }
+
+  // gimmick
   if (strcmp(args[0], "14") == 0)
   {
     printf("( ͡ಠ ʖ̯ ͡ಠ ) Imagine giving students an exercise sheet with only 14 pages and not 21. \n \n");
     return 1;
   }
 
+  // Unimode
   if (strcmp(args[0], "Unimode") == 0 || strcmp(args[0], "unimode") == 0)
   {
     learning = unimode(learning);
     return 1;
   }
 
+  // Pomodoro
   if (strcmp(args[0], "Pomodoro") == 0 || strcmp(args[0], "pomodoro") == 0)
   {
     if (args[1] != NULL && strcmp(args[1], "-h") == 0)
@@ -176,6 +206,7 @@ int execute(char **args)
     }
   }
 
+  // Check if command is intern
   for (int i = 0; i < size_intern_strings(); i++)
   {
     if (strcmp(args[0], intern_strings[i]) == 0)
@@ -219,7 +250,6 @@ int execute(char **args)
   return 1;
 }
 
-
 /**
  * @brief Main loop of the shell which does 3 things.
  * 1. Get input and store it into a string
@@ -237,18 +267,19 @@ void main_loop()
   char hostname[HOST_NAME_MAX];
 
   gethostname(hostname, HOST_NAME_MAX);
-  
+
   // get length of username and hostname
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
-
   us_help(NULL);
 
   // While status is good (0) read-split into args-execute
   do
   {
     getcwd(cwd, sizeof(cwd));
-    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n%*c└─" CYN "₿ ", hostname, getusername(), cwd, (hostname_len + username_len + 3), ' ');
+    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]―" GRN "[" CYN "%s" GRN "]"
+               "\n%*c└─" CYN "₿ ",
+           hostname, getusername(), get_ip(ip), cwd, (hostname_len + username_len + 3), ' ');
     line = read_input();
     args = split_input(line);
     status = execute(args);
