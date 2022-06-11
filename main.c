@@ -242,22 +242,13 @@ void main_loop()
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
 
-
-  // make string with (hostname_len + username_len) spaces
-  char *blanks = malloc(sizeof(char) * (hostname_len + username_len));
-
-  for (int i = 0; i < (hostname_len + username_len + 3); i++)
-  {
-    blanks[i] =" ";
-  }
-
   us_help(NULL);
 
   // While status is good (0) read-split into args-execute
   do
   {
     getcwd(cwd, sizeof(cwd));
-    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n%s└─" CYN "₿ ", hostname, getusername(), cwd,blanks);
+    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n%*c└─" CYN "₿ ", hostname, getusername(), cwd, (hostname_len + username_len + 3), ' ');
     line = read_input();
     args = split_input(line);
     status = execute(args);
