@@ -238,7 +238,7 @@ void main_loop()
 
   gethostname(hostname, HOST_NAME_MAX);
   
-  // get length of string
+  // get length of username and hostname
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
 
