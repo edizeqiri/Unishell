@@ -23,7 +23,7 @@ int learn_int = 25;
 int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
-char *ip = "tun0";
+char *ip = "eth0";
 
 char *intern_strings[] = {
     "cd",
@@ -138,22 +138,45 @@ int execute(char **args)
 
   if (strcmp(args[0], "interface") == 0 && args[1] != NULL)
   {
-    ip = args[1];
+    if (strcmp(args[1], "tun0") == 0)
+    {
+      ip = "tun0";
+    }
+    else if (strcmp(args[1], "wlan0") == 0)
+    {
+      ip = "wlan0";
+    }
+    else if (strcmp(args[1], "lo") == 0)
+    {
+      ip = "lo";
+    }
+    else if (strcmp(args[1], "eth0") == 0)
+    {
+      ip = "eth0";
+    }
+    else
+    {
+      fprintf(stderr, "Unknown interface.\n");
+      return 1;
+    }
     return 1;
   }
 
+  // gimmick
   if (strcmp(args[0], "14") == 0)
   {
     printf("( ͡ಠ ʖ̯ ͡ಠ ) Imagine giving students an exercise sheet with only 14 pages and not 21. \n \n");
     return 1;
   }
 
+  // Unimode
   if (strcmp(args[0], "Unimode") == 0 || strcmp(args[0], "unimode") == 0)
   {
     learning = unimode(learning);
     return 1;
   }
 
+  // Pomodoro
   if (strcmp(args[0], "Pomodoro") == 0 || strcmp(args[0], "pomodoro") == 0)
   {
     if (args[1] != NULL && strcmp(args[1], "-h") == 0)
@@ -183,6 +206,7 @@ int execute(char **args)
     }
   }
 
+  // Check if command is intern
   for (int i = 0; i < size_intern_strings(); i++)
   {
     if (strcmp(args[0], intern_strings[i]) == 0)
@@ -259,8 +283,6 @@ void main_loop()
     line = read_input();
     args = split_input(line);
     status = execute(args);
-  
-    printf("%s\n", ip);
 
     free(line);
     free(args);
