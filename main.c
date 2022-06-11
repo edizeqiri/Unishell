@@ -6,7 +6,7 @@
 #include <string.h>
 #include <pwd.h>
 #include <limits.h>
-
+#include <ifaddrs.h>
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -23,6 +23,7 @@ int learn_int = 25;
 int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
+char *ip = "tun0";
 
 char *intern_strings[] = {
     "cd",
@@ -135,6 +136,12 @@ int execute(char **args)
     return 1;
   }
 
+  if (strcmp(args[0], "interface") == 0 && args[1] != NULL)
+  {
+    ip = args[1];
+    return 1;
+  }
+
   if (strcmp(args[0], "14") == 0)
   {
     printf("( ͡ಠ ʖ̯ ͡ಠ ) Imagine giving students an exercise sheet with only 14 pages and not 21. \n \n");
@@ -219,7 +226,6 @@ int execute(char **args)
   return 1;
 }
 
-
 /**
  * @brief Main loop of the shell which does 3 things.
  * 1. Get input and store it into a string
@@ -237,18 +243,21 @@ void main_loop()
   char hostname[HOST_NAME_MAX];
 
   gethostname(hostname, HOST_NAME_MAX);
-  
+
   // get length of username and hostname
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
-
+  char *tmp;
   us_help(NULL);
 
   // While status is good (0) read-split into args-execute
   do
   {
+    tmp = get_ip(ip);
     getcwd(cwd, sizeof(cwd));
-    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n%*c└─" CYN "₿ ", hostname, getusername(), cwd, (hostname_len + username_len + 3), ' ');
+    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]―" GRN "[" CYN "%s" GRN "]"
+               "\n%*c└─" CYN "₿ ",
+           hostname, getusername(),tmp , cwd, (hostname_len + username_len + 3), ' ');
     line = read_input();
     args = split_input(line);
     status = execute(args);
