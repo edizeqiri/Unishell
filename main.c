@@ -247,20 +247,20 @@ void main_loop()
   // get length of username and hostname
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
-  char *tmp;
   us_help(NULL);
 
   // While status is good (0) read-split into args-execute
   do
   {
-    tmp = get_ip(ip);
     getcwd(cwd, sizeof(cwd));
     printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]―" GRN "[" CYN "%s" GRN "]"
                "\n%*c└─" CYN "₿ ",
-           hostname, getusername(),tmp , cwd, (hostname_len + username_len + 3), ' ');
+           hostname, getusername(), get_ip(ip), cwd, (hostname_len + username_len + 3), ' ');
     line = read_input();
     args = split_input(line);
     status = execute(args);
+  
+    printf("%s\n", ip);
 
     free(line);
     free(args);
