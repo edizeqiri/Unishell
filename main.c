@@ -179,7 +179,7 @@ int execute(char **args)
   // Pomodoro
   if (strcmp(args[0], "Pomodoro") == 0 || strcmp(args[0], "pomodoro") == 0)
   {
-    if (args[1] != NULL && strcmp(args[1], "-h") == 0)
+    if (args[1] != NULL && strcmp(args[1], "-h") == 0 || args[1] != NULL && strcmp(args[1], "-help") == 0)
     {
       printf("Usage ☜(⌒▽⌒)☞: Pomodoro [Learning Interval] [Pause Interval]\n");
       return 1;
@@ -200,7 +200,6 @@ int execute(char **args)
     }
     else
     {
-      printf("\nStarting Pomodoro with 25min learn and 5min pause interval ☜(⌒▽⌒)☞\n \n");
       pomodoro(learn_int, pause_int);
       return 1;
     }
