@@ -261,7 +261,7 @@ int main(int argc, char **argv)
   // Run command loop.
   main_loop();
 
-  printf("See you later alligator!");
+  printf("See you later alligator!\n");
   // Perform any shutdown/cleanup.
 
   return EXIT_SUCCESS;
