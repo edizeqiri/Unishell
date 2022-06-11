@@ -95,7 +95,7 @@ int us_help(char **args)
   return 1;
 }
 
-int unimode(learning)
+int unimode(int learning)
 {
 
   // if unimode off
