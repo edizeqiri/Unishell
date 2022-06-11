@@ -5,9 +5,9 @@
 
 ### Makefile
 
-1. Compile: 'make'
-2. Compile and run: 'make exe'
-3. Clean: 'make clean' 
+1. Compile: `make`
+2. Compile and run: `make exe`
+3. Clean: `make clean` 
 
 ### Vanilla
 1. Get the repo in your preffered way (fork, clone, dowload zip, ...)
@@ -17,7 +17,7 @@
 ## Functionality
 
 - `cd`: Change current Directory
-- `help`: Helper function
+- `help`: Helper function to show functionalities
 - `exit`: Exit shell 
 - `Unimode`: Start your learning journey here!
 - `Pomodoro`: Starts a Pomodoro timer.
