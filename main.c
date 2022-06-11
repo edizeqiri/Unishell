@@ -237,6 +237,10 @@ void main_loop()
   char hostname[HOST_NAME_MAX];
 
   gethostname(hostname, HOST_NAME_MAX);
+  
+  // get length of username and hostname
+  int hostname_len = strlen(hostname);
+  int username_len = strlen(getusername());
 
   us_help(NULL);
 
@@ -244,7 +248,7 @@ void main_loop()
   do
   {
     getcwd(cwd, sizeof(cwd));
-    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n            └─" CYN "₿ ", hostname, getusername(), cwd);
+    printf(GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "]" GRN "\n%*c└─" CYN "₿ ", hostname, getusername(), cwd, (hostname_len + username_len + 3), ' ');
     line = read_input();
     args = split_input(line);
     status = execute(args);
