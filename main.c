@@ -188,15 +188,10 @@ int execute(char **args)
     {
       intervals = 0;
     }
-
     else if (args[1] != NULL && args[2] != NULL)
     {
-      intervals = 6;
-      if (scanf("%d", args[1]) && scanf("%d", args[2]))
-      {
-        pomodoro(atoi(args[1]), atoi(args[2]));
-        return 1;
-      }
+      pomodoro(atoi(args[1]), atoi(args[2]));
+      return 1;
     }
     else
     {
