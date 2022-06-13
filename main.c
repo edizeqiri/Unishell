@@ -70,7 +70,9 @@ char getch() {
 char *read_input()
 {
   char *line = NULL;
+  int bufsize = 1024;
   ssize_t size = 0;
+  line = malloc(sizeof(char) * bufsize);
 
   while (1)
   {
@@ -86,13 +88,14 @@ char *read_input()
       {
         printf("\b \b");
         size--;
+        // line = realloc(line, size);
         line[size] = '\0';
       }
     }
     else
     {
       printf("%c", c);
-      line = realloc(line, size + 1);
+      // line = realloc(line, size + 1);
       line[size] = c;
       size++;
     }
