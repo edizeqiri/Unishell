@@ -80,18 +80,19 @@ char *read_input()
     {
       break;
     }
-    else if (c == 127) // Backspace
+    else if (c == 127) //Backspace
     {
       if (size > 0)
       {
         printf("\b \b");
         size--;
+        line[size] = '\0';
       }
     }
     else
     {
       printf("%c", c);
-      line = realloc(line, size + 2);
+      line = realloc(line, size + 1);
       line[size] = c;
       size++;
     }
