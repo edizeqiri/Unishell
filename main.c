@@ -7,6 +7,7 @@
 #include <pwd.h>
 #include <limits.h>
 #include <ifaddrs.h>
+#include <termios.h>
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -40,6 +41,26 @@ int size_intern_strings()
   return sizeof(intern_strings) / sizeof(char *);
 }
 
+char getch() {
+  char buf = 0;
+  struct termios old = {0};
+  if (tcgetattr(0, &old) < 0)
+          perror("tcsetattr()");
+  old.c_lflag &= ~ICANON;
+  old.c_lflag &= ~ECHO;
+  old.c_cc[VMIN] = 1;
+  old.c_cc[VTIME] = 0;
+  if (tcsetattr(0, TCSANOW, &old) < 0)
+          perror("tcsetattr ICANON");
+  if (read(0, &buf, 1) < 0)
+          perror ("read()");
+  old.c_lflag |= ICANON;
+  old.c_lflag |= ECHO;
+  if (tcsetattr(0, TCSADRAIN, &old) < 0)
+          perror ("tcsetattr ~ICANON");
+  return (buf);
+}
+
 /**
  * @brief Store input into a buffer which then gets saved into a String
  *
@@ -50,23 +71,33 @@ char *read_input()
   char *line = NULL;
   ssize_t size = 0;
 
-  if (getline(&line, &size, stdin) == -1)
+  while (1)
   {
-
-    // Look for EOF (End of File)
-    if (feof(stdin))
+    fflush(stdout);
+    char c = getch();
+    if (c == '\n')
     {
-      exit(EXIT_SUCCESS);
+      break;
     }
-
-    // Something went wrong
+    else if (c == 127) // Backspace
+    {
+      if (size > 0)
+      {
+        printf("\b \b");
+        size--;
+      }
+    }
     else
     {
-      perror("readline");
-      exit(EXIT_FAILURE);
+      printf("%c", c);
+      line = realloc(line, size + 2);
+      line[size] = c;
+      size++;
     }
   }
-
+  line[size] = '\n';
+  
+  fflush(stdout);
   return line;
 }
 
