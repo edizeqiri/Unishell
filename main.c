@@ -25,6 +25,7 @@ int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
 char *ip = "eth0";
+char *line;
 
 char *intern_strings[] = {
     "cd",
@@ -221,12 +222,12 @@ int execute(char **args)
     }
     else if (args[1] != NULL && args[2] != NULL)
     {
-      pomodoro(atoi(args[1]), atoi(args[2]));
+      pomodoro(atoi(args[1]), atoi(args[2]), line);
       return 1;
     }
     else
     {
-      pomodoro(learn_int, pause_int);
+      pomodoro(learn_int, pause_int, line);
       return 1;
     }
   }
@@ -283,7 +284,6 @@ int execute(char **args)
  */
 void main_loop()
 {
-  char *line;
   char **args;
   int status;
 
