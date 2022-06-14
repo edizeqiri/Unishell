@@ -65,21 +65,21 @@ char *getusername()
 
 int welcome(char **args)
 {
-  printf(GRN "\n==============================================================\n" CYN);
-  printf(" /$$   /$$           /$$           /$$                 /$$ /$$\n\
-| $$  | $$          |__/          | $$                | $$| $$\n\
-| $$  | $$ /$$$$$$$  /$$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$| $$\n\
-| $$  | $$| $$__  $$| $$ /$$_____/| $$__  $$ /$$__  $$| $$| $$\n\
-| $$  | $$| $$  \\ $$| $$|  $$$$$$ | $$  \\ $$| $$$$$$$$| $$| $$\n\
-| $$  | $$| $$  | $$| $$ \\____  $$| $$  | $$| $$_____/| $$| $$\n\
-|  $$$$$$/| $$  | $$| $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$| $$\n\
- \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n" GRN);
-  printf("==============================================================\n");
-  printf(GRN "\n|=========================================================================|\n");
-  printf("|" CYN "                 The Unishell for students from students                 " GRN "|\n");
-  printf("|" CYN "  Our improved shell will make you feel like learning could never stop!  " GRN "|\n");
-  printf("|" CYN "                     Happy learning " RED "( ˘ ³˘)♥" GRN "                             " GRN "|\n", getusername());
-  printf("|=========================================================================|\n \n");
+  printf(GRN "\n     ==============================================================\n" CYN);
+  printf("     /$$   /$$           /$$           /$$                 /$$ /$$\n\
+    | $$  | $$          |__/          | $$                | $$| $$\n\
+    | $$  | $$ /$$$$$$$  /$$  /$$$$$$$| $$$$$$$   /$$$$$$ | $$| $$\n\
+    | $$  | $$| $$__  $$| $$ /$$_____/| $$__  $$ /$$__  $$| $$| $$\n\
+    | $$  | $$| $$  \\ $$| $$|  $$$$$$ | $$  \\ $$| $$$$$$$$| $$| $$\n\
+    | $$  | $$| $$  | $$| $$ \\____  $$| $$  | $$| $$_____/| $$| $$\n\
+    |  $$$$$$/| $$  | $$| $$ /$$$$$$$/| $$  | $$|  $$$$$$$| $$| $$\n\
+     \\______/ |__/  |__/|__/|_______/ |__/  |__/ \\_______/|__/|__/\n" GRN);
+  printf("     ==============================================================\n");
+  printf(GRN "\n=========================================================================\n");
+  printf(CYN "                 The Unishell for students from students                 " GRN "\n");
+  printf(CYN "  Our improved shell will make you feel like learning could never stop!  " GRN "\n");
+  printf(CYN "                     Happy learning" RED " %s ( ˘ ³˘)♥" GRN "                             " GRN "\n", getusername());
+  printf("=========================================================================\n \n");
 
   return 1;
 }
@@ -178,18 +178,17 @@ int size_intern_strings()
 
 int us_help(char **args)
 {
-  printf(GRN"\n                |======================================|\n");
-  printf("                |"CYN " The following commands are built in: "GRN "|\n");
-  printf(GRN"                |======================================|\n"YEL);
+  printf(GRN "\n                |======================================|\n");
+  printf("                |" CYN " The following commands are built in: " GRN "|\n");
+  printf(GRN "                |======================================|\n" YEL);
 
   // get lenght of string
 
-
   for (int i = 0; i < size_intern_strings(); i++)
   {
-    printf(GRN"                |"YEL);
-    printf("             %d. %s",i+1, intern_strings[i]);
-    printf(GRN"            %*c|\n",10 - strlen(intern_strings[i]), ' ');
+    printf(GRN "                |" YEL);
+    printf("             %d. %s", i + 1, intern_strings[i]);
+    printf(GRN "            %*c|\n", 10 - strlen(intern_strings[i]), ' ');
   }
-   printf(GRN"                |======================================|\n\n");
+  printf(GRN "                |======================================|\n\n");
 }
