@@ -1,7 +1,16 @@
-name: GitHub Actions Maker
-on: [push]
+name: Maker
+
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: make
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: build application
+        run: make
