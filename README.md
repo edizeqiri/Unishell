@@ -21,7 +21,8 @@
 
 - `cd`: Change current Directory
 - `help`: Helper function to show functionalities
-- `exit`: Exit shell 
+- `exit`: Exit shell
+- `welcome`: Displays the welcome message
 - `Unimode`: Start your learning journey here!
 - `Pomodoro`: Starts a Pomodoro timer.
 - `interface [ip_interface]`: Change which interface to use.
@@ -33,12 +34,7 @@ Arguments only get parsed if they are seperated by whitespace. This means that `
 
 - [x] Unimode
     - idea is to make a copy of ``/etc/hosts/`` and then change every "bad" site (e.g. facebook, instagram,...) to ``127.0.0.1`` so that user can't access it.
-- [ ] config file
+- [x] Pomodoro
 - [x] UI: vertical bar is hardcoded -> needs to be alined.
 - [x] UI: add IP
-- [ ] installation process (start a script which generates all the needed things for Unimode)
-    - config file
-    - ...
-- [ ] Minigames and easter eggs
-
 
