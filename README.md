@@ -1,5 +1,8 @@
 # Unishell
- The best shell for a CS student
+
+
+<p align="center"><img src="https://user-images.githubusercontent.com/89740646/173557119-a9a465e4-bcfd-4162-82f2-f0c630c03a3f.png">
+
 
 ## Installation
 
