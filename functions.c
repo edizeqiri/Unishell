@@ -112,7 +112,7 @@ int unimode(int learning)
   {
 
     // revert changes
-    if (remove("/etc/hosts") != 0)
+    if (rename("/etc/hosts", "hosts") != 0)
     {
       perror("Unishell ಥ_ಥ");
       return -1;
