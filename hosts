@@ -1,9 +1,8 @@
 127.0.0.1       localhost
 0.0.0.0       www.facebook.com
 0.0.0.0       www.instagram.com
-0.0.0.0       www.pornhub.com
 0.0.0.0       www.tiktok.com
-0.0.0.0       www.digitec.com
+0.0.0.0       www.digitec.ch
 0.0.0.0       www.youtube.com
 
 # The following lines are desirable for IPv6 capable hosts
