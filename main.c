@@ -19,23 +19,24 @@ int time_us = 0;
 char *ip = "eth0";
 char *line;
 
-char getch() {
+char getch()
+{
   char buf = 0;
   struct termios old = {0};
   if (tcgetattr(0, &old) < 0)
-          perror("tcsetattr()");
+    perror("tcsetattr()");
   old.c_lflag &= ~ICANON;
   old.c_lflag &= ~ECHO;
   old.c_cc[VMIN] = 1;
   old.c_cc[VTIME] = 0;
   if (tcsetattr(0, TCSANOW, &old) < 0)
-          perror("tcsetattr ICANON");
+    perror("tcsetattr ICANON");
   if (read(0, &buf, 1) < 0)
-          perror ("read()");
+    perror("read()");
   old.c_lflag |= ICANON;
   old.c_lflag |= ECHO;
   if (tcsetattr(0, TCSADRAIN, &old) < 0)
-          perror ("tcsetattr ~ICANON");
+    perror("tcsetattr ~ICANON");
   return (buf);
 }
 
@@ -59,7 +60,7 @@ char *read_input()
     {
       break;
     }
-    else if (c == 127) //Backspace
+    else if (c == 127) // Backspace
     {
       if (size > 0)
       {

@@ -131,7 +131,7 @@ int unimode(int learning)
   return 1;
 }
 
-void printWithTime(int h, int m, int s, int pause, int i, int interval, char* line)
+void printWithTime(int h, int m, int s, int pause, int i, int interval, char *line)
 {
   char cwd[PATH_MAX];
   char hostname[HOST_NAME_MAX];
@@ -142,17 +142,17 @@ void printWithTime(int h, int m, int s, int pause, int i, int interval, char* li
   int username_len = strlen(getusername());
   getcwd(cwd, sizeof(cwd));
 
-  printf("\033[A\r" GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "] {%s%02d:%02d:%02d - %s (%d/%d)" GRN "} \n%*c└─" CYN "₿ %s", 
-    hostname,
-    getusername(),
-    cwd,
-    pause ? MAG : BLU,
-    h, m, s,
-    pause ? "Rest" : "Study",
-    i, interval,
-    (hostname_len + username_len + 3),
-    ' ',
-    line);
+  printf("\033[A\r" GRN "(" YEL "%s" CYN "@" RED "%s" GRN ")┬" GRN "[" CYN "%s" GRN "] {%s%02d:%02d:%02d - %s (%d/%d)" GRN "} \n%*c└─" CYN "₿ %s",
+         hostname,
+         getusername(),
+         cwd,
+         pause ? MAG : BLU,
+         h, m, s,
+         pause ? "Rest" : "Study",
+         i, interval,
+         (hostname_len + username_len + 3),
+         ' ',
+         line);
 
   fflush(stdout);
 }
@@ -161,7 +161,7 @@ struct pomodoro_args
 {
   int learn_int;
   int pause_int;
-  char* line;
+  char *line;
 };
 
 void *pomodoroThread(void *_args)
@@ -169,7 +169,7 @@ void *pomodoroThread(void *_args)
   sleep(0.5);
   int status;
   int interval = 6;
-  struct pomodoro_args *args = (struct pomodoro_args *) _args;
+  struct pomodoro_args *args = (struct pomodoro_args *)_args;
   int learn_int = args->learn_int * 60000;
   int pause_int = args->pause_int * 60000;
   char *line = args->line;
@@ -179,32 +179,34 @@ void *pomodoroThread(void *_args)
   {
     // Study
     int time = 0;
-    do {
+    do
+    {
       int left = learn_int - time;
-      printWithTime(left/3600000, left/60000 % 60, left/1000 % 60, 0, i+1, interval, line);
+      printWithTime(left / 3600000, left / 60000 % 60, left / 1000 % 60, 0, i + 1, interval, line);
       sleep(1);
       time += 1000;
     } while (time <= learn_int);
 
     // Pause
     time = 0;
-    do {
+    do
+    {
       int left = pause_int - time;
-      printWithTime(left/3600000, left/60000 % 60, left/1000 % 60, 1, i+1, interval, line);
+      printWithTime(left / 3600000, left / 60000 % 60, left / 1000 % 60, 1, i + 1, interval, line);
       sleep(1);
       time += 1000;
     } while (time <= pause_int);
   }
-  
+
   return NULL;
 }
 
-void pomodoro(int _learn_int, int _pause_int, char* line)
+void pomodoro(int _learn_int, int _pause_int, char *line)
 {
   printf("\nStarting Pomodoro with %dmin learn and %dmin pause interval ☜(⌒▽⌒)☞\n\n", _learn_int, _pause_int);
 
   pthread_t thread_id;
-  struct pomodoro_args *args = malloc (sizeof (struct pomodoro_args));
+  struct pomodoro_args *args = malloc(sizeof(struct pomodoro_args));
   args->learn_int = _learn_int;
   args->pause_int = _pause_int;
   args->line = line;
