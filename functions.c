@@ -107,6 +107,7 @@ int unimode(int learning)
     }
     printf("You have started the ZEN ᕙ(⇀‸↼)ᕗ\n");
     printf("To leave The ZEN ᕙ(⇀‸↼)ᕗ just type the command 'unimode' again.\n");
+    return 1;
   } // if unimode on
   else
   {
@@ -128,7 +129,7 @@ int unimode(int learning)
     printf("To start The ZEN ᕙ(⇀‸↼)ᕗ again just type the command 'unimode'.\n");
   }
 
-  return 1;
+  return 0;
 }
 
 void printWithTime(int h, int m, int s, int pause, int i, int interval, char *line)
