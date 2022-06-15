@@ -187,7 +187,9 @@ int execute(char **args)
   // Unimode
   if (strcmp(args[0], "Unimode") == 0 || strcmp(args[0], "unimode") == 0)
   {
+    printf("learning before: %d\n",learning);
     learning = unimode(learning);
+    printf("learning now: %d\n",learning);
     return 1;
   }
 
