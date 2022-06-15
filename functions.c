@@ -132,6 +132,25 @@ int unimode(int learning)
   return 0;
 }
 
+/**
+ * @brief Prints the command line with time left from the pomodoro timer
+ * 
+ * This basically is the same as in the main loop. It gets all the needed 
+ * data to print it. In addition it here prints with the time left from 
+ * the pomodoro timer. It flushed the stdout to make sure the output is
+ * printed correctly. Because the OS only updates the terminal after a
+ * line break is detected. Flushing the stream ensures that the os is 
+ * forced to update it.
+ * 
+ * @param h hours left
+ * @param m minutes left
+ * @param s seconds left
+ * @param pause is in pause mode
+ * @param i current iteration
+ * @param interval amount of intervals in total
+ * @param line current line with input from the user to be added to command line
+ * @param ip interface used to get the ip address
+ */
 void printWithTime(int h, int m, int s, int pause, int i, int interval, char *line, char* ip)
 {
   char cwd[PATH_MAX];
@@ -159,6 +178,9 @@ void printWithTime(int h, int m, int s, int pause, int i, int interval, char *li
   fflush(stdout);
 }
 
+/**
+ * @brief Struct to give data to the thread
+ */
 struct pomodoro_args
 {
   int learn_int;
@@ -167,6 +189,14 @@ struct pomodoro_args
   char *ip;
 };
 
+/**
+ * @brief Pomodoro thread keeps track of past time and updates command line
+ * 
+ * Has all loops needed for pomodoro to work. Updates line with left time and 
+ * then sleeps for one second (So actually not real clock).
+ * 
+ * @param _args to be used for pomodoro timer
+ */
 void *pomodoroThread(void *_args)
 {
   sleep(0.5);
@@ -205,6 +235,14 @@ void *pomodoroThread(void *_args)
   return NULL;
 }
 
+/**
+ * @brief Main pomodoro function that starts pomodoro thread
+ * 
+ * @param _learn_int learn duration per intervall
+ * @param _pause_int pause duration per intervall
+ * @param line pointer to line being buffered
+ * @param ip pointer to interface
+ */
 void pomodoro(int _learn_int, int _pause_int, char *line, char* ip)
 {
   printf("\nStarting Pomodoro with %dmin learn and %dmin pause interval ☜(⌒▽⌒)☞\n\n", _learn_int, _pause_int);
