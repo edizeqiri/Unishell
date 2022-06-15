@@ -14,7 +14,7 @@
 
 ### Vanilla
 1. Get the repo in your preffered way (fork, clone, dowload zip, ...)
-2. Compile with `gcc main.c -o Unishell`
+2. Compile with `gcc main.c -lpthread -o Unishell`
 3. Start with `./Unishell`
 
 ## Functionality
@@ -33,7 +33,7 @@ Arguments only get parsed if they are seperated by whitespace. This means that `
 ## TODOs
 
 - [x] Unimode
-    - idea is to make a copy of ``/etc/hosts/`` and then change every "bad" site (e.g. facebook, instagram,...) to ``127.0.0.1`` so that user can't access it.
+    - idea is to make a copy of ``/etc/hosts/`` and then change every "bad" site (e.g. facebook, instagram,...) to ``0.0.0.0`` so that user can't access it.
 - [x] Pomodoro
 - [x] UI: vertical bar is hardcoded -> needs to be alined.
 - [x] UI: add IP
