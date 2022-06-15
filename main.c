@@ -7,6 +7,7 @@
 #include <pwd.h>
 #include <limits.h>
 #include <ifaddrs.h>
+#include <termios.h>
 
 #include "functions.h"
 
@@ -16,6 +17,27 @@ int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
 char *ip = "eth0";
+char *line;
+
+char getch() {
+  char buf = 0;
+  struct termios old = {0};
+  if (tcgetattr(0, &old) < 0)
+          perror("tcsetattr()");
+  old.c_lflag &= ~ICANON;
+  old.c_lflag &= ~ECHO;
+  old.c_cc[VMIN] = 1;
+  old.c_cc[VTIME] = 0;
+  if (tcsetattr(0, TCSANOW, &old) < 0)
+          perror("tcsetattr ICANON");
+  if (read(0, &buf, 1) < 0)
+          perror ("read()");
+  old.c_lflag |= ICANON;
+  old.c_lflag |= ECHO;
+  if (tcsetattr(0, TCSADRAIN, &old) < 0)
+          perror ("tcsetattr ~ICANON");
+  return (buf);
+}
 
 /**
  * @brief Store input into a buffer which then gets saved into a String
@@ -25,25 +47,39 @@ char *ip = "eth0";
 char *read_input()
 {
   char *line = NULL;
+  int bufsize = 1024;
   ssize_t size = 0;
+  line = malloc(sizeof(char) * bufsize);
 
-  if (getline(&line, &size, stdin) == -1)
+  while (1)
   {
-
-    // Look for EOF (End of File)
-    if (feof(stdin))
+    fflush(stdout);
+    char c = getch();
+    if (c == '\n')
     {
-      exit(EXIT_SUCCESS);
+      break;
     }
-
-    // Something went wrong
+    else if (c == 127) //Backspace
+    {
+      if (size > 0)
+      {
+        printf("\b \b");
+        size--;
+        // line = realloc(line, size);
+        line[size] = '\0';
+      }
+    }
     else
     {
-      perror("readline");
-      exit(EXIT_FAILURE);
+      printf("%c", c);
+      // line = realloc(line, size + 1);
+      line[size] = c;
+      size++;
     }
   }
-
+  line[size] = '\n';
+  printf("\n");
+  fflush(stdout);
   return line;
 }
 
@@ -157,7 +193,7 @@ int execute(char **args)
   // Pomodoro
   if (strcmp(args[0], "Pomodoro") == 0 || strcmp(args[0], "pomodoro") == 0)
   {
-    if (args[1] != NULL && strcmp(args[1], "-h") == 0)
+    if (args[1] != NULL && strcmp(args[1], "-h") == 0 || args[1] != NULL && strcmp(args[1], "-help") == 0)
     {
       printf("Usage ☜(⌒▽⌒)☞: Pomodoro [Learning Interval] [Pause Interval]\n");
       return 1;
@@ -166,20 +202,14 @@ int execute(char **args)
     {
       intervals = 0;
     }
-
     else if (args[1] != NULL && args[2] != NULL)
     {
-      intervals = 6;
-      if (scanf("%d", args[1]) && scanf("%d", args[2]))
-      {
-        pomodoro(atoi(args[1]), atoi(args[2]));
-        return 1;
-      }
+      pomodoro(atoi(args[1]), atoi(args[2]), line);
+      return 1;
     }
     else
     {
-      printf("\nStarting Pomodoro with 25min learn and 5min pause interval ☜(⌒▽⌒)☞\n \n");
-      pomodoro(learn_int, pause_int);
+      pomodoro(learn_int, pause_int, line);
       return 1;
     }
   }
@@ -236,7 +266,6 @@ int execute(char **args)
  */
 void main_loop()
 {
-  char *line;
   char **args;
   int status;
 

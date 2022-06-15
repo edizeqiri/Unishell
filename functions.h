@@ -6,7 +6,7 @@ int welcome(char **args);
 int us_help(char **args);
 int us_exit(char **args);
 int unimode(int learning);
-void pomodoro(int learn_int, int pause_int);
+void pomodoro(int learn_int, int pause_int, char* line);
 char* get_ip(char *interface);
 char *getusername();
 
