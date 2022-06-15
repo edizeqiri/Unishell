@@ -98,6 +98,7 @@ char *read_input()
     }
   }
   line[size] = '\n';
+  line[size+1] = '\0';
   printf("\n");
   fflush(stdout);
   return line;
