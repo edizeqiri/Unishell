@@ -21,15 +21,15 @@ char *line;
 
 /**
  * @brief Read character from stdin without buffering.
- * 
+ *
  * This function reads a character from stdin without buffering.
  * It is used to read the input and save the line in a custom buffer (line).
  * This is done to be able to keep what was printed after the pomodoro thread
  * cleans the console line.
- * 
+ *
  * It works by disabling canonical and echo mode. We then have to to print the
  * read carachter to stdout manually.
- * 
+ *
  * @return char character read from stdin without waiting for a newline.
  */
 char getch()
@@ -55,11 +55,11 @@ char getch()
 
 /**
  * @brief Reads every character pressed with help of getch() and stores it in a buffer.
- * 
- * Line buffer (1024 chars) is allocated at the start. On every key press the output 
- * stream stdout is flushed to ensure that it displays correctly. When pressing backspace 
- * the line to be adjusted to the new size. It does that by adding the \0 delimiter. 
- * After reading a line break, a line break is added to the buffer and the stdout is 
+ *
+ * Line buffer (1024 chars) is allocated at the start. On every key press the output
+ * stream stdout is flushed to ensure that it displays correctly. When pressing backspace
+ * the line to be adjusted to the new size. It does that by adding the \0 delimiter.
+ * After reading a line break, a line break is added to the buffer and the stdout is
  * flushed.
  *
  * @return char* input line
@@ -98,7 +98,7 @@ char *read_input()
     }
   }
   line[size] = '\n';
-  line[size+1] = '\0';
+  line[size + 1] = '\0';
   printf("\n");
   fflush(stdout);
   return line;

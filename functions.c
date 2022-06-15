@@ -85,6 +85,17 @@ int welcome(char **args)
   return 1;
 }
 
+/**
+ * @brief start unimode by changing the /etc/hosts file
+ * to /etc/hosts.old if activated. This is to prevent the
+ * user from accessing specific websites.
+ *
+ * When the user activates the shell again, the /etc/hosts.old
+ * gets changed to /etc/hosts and the user can access the websites.
+ *
+ * @param learning boolean to check if the user is learning or not
+ * @return int
+ */
 int unimode(int learning)
 {
 
@@ -134,14 +145,14 @@ int unimode(int learning)
 
 /**
  * @brief Prints the command line with time left from the pomodoro timer
- * 
- * This basically is the same as in the main loop. It gets all the needed 
- * data to print it. In addition it here prints with the time left from 
+ *
+ * This basically is the same as in the main loop. It gets all the needed
+ * data to print it. In addition it here prints with the time left from
  * the pomodoro timer. It flushed the stdout to make sure the output is
  * printed correctly. Because the OS only updates the terminal after a
- * line break is detected. Flushing the stream ensures that the os is 
+ * line break is detected. Flushing the stream ensures that the os is
  * forced to update it.
- * 
+ *
  * @param h hours left
  * @param m minutes left
  * @param s seconds left
@@ -151,7 +162,7 @@ int unimode(int learning)
  * @param line current line with input from the user to be added to command line
  * @param ip interface used to get the ip address
  */
-void printWithTime(int h, int m, int s, int pause, int i, int interval, char *line, char* ip)
+void printWithTime(int h, int m, int s, int pause, int i, int interval, char *line, char *ip)
 {
   char cwd[PATH_MAX];
   char hostname[HOST_NAME_MAX];
@@ -191,10 +202,10 @@ struct pomodoro_args
 
 /**
  * @brief Pomodoro thread keeps track of past time and updates command line
- * 
- * Has all loops needed for pomodoro to work. Updates line with left time and 
+ *
+ * Has all loops needed for pomodoro to work. Updates line with left time and
  * then sleeps for one second (So actually not real clock).
- * 
+ *
  * @param _args to be used for pomodoro timer
  */
 void *pomodoroThread(void *_args)
@@ -237,13 +248,13 @@ void *pomodoroThread(void *_args)
 
 /**
  * @brief Main pomodoro function that starts pomodoro thread
- * 
+ *
  * @param _learn_int learn duration per intervall
  * @param _pause_int pause duration per intervall
  * @param line pointer to line being buffered
  * @param ip pointer to interface
  */
-void pomodoro(int _learn_int, int _pause_int, char *line, char* ip)
+void pomodoro(int _learn_int, int _pause_int, char *line, char *ip)
 {
   printf("\nStarting Pomodoro with %dmin learn and %dmin pause interval ☜(⌒▽⌒)☞\n\n", _learn_int, _pause_int);
 
@@ -260,7 +271,16 @@ void pomodoro(int _learn_int, int _pause_int, char *line, char* ip)
 
 /**
  * @brief gets the IP address of the computer
+ *
+ * This function gets the IP address of the computer with ioctl(). It then parses the
+ * result and returns the IP address.
+ *
+ * from stackoverflow: https://stackoverflow.com/questions/2283494/get-ip-address-of-an-interface-on-linux
+ *
+ * @param ip pointer to interface
  * @return char* the IP address
+ *
+
  */
 char *get_ip(char *interface)
 {
@@ -287,6 +307,12 @@ int size_intern_strings()
   return sizeof(intern_strings) / sizeof(char *);
 }
 
+/**
+ * @brief help function that prints the help message
+ *
+ * @param args not relevant for this command
+ * @return int
+ */
 int us_help(char **args)
 {
   printf(GRN "\n                |======================================|\n");
@@ -302,4 +328,6 @@ int us_help(char **args)
     printf(GRN "            %*c|\n", 10 - strlen(intern_strings[i]), ' ');
   }
   printf(GRN "                |======================================|\n\n");
+
+  return 1;
 }
