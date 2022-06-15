@@ -2,12 +2,28 @@
 #define FUNCTIONS_H_
 
 int us_cd(char **args);
+int welcome(char **args);
 int us_help(char **args);
 int us_exit(char **args);
 int unimode(int learning);
 void pomodoro(int learn_int, int pause_int);
 char* get_ip(char *interface);
 char *getusername();
+
+static char *intern_strings[] = {
+    "cd",
+    "help",
+    "exit",
+    "welcome",
+    "unimode",
+    "interface",
+    "pomodoro"};
+
+static int (*intern_func[])(char **) = {
+    &us_cd,
+    &us_help,
+    &us_exit,
+    &welcome};
 
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"

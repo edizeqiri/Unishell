@@ -8,14 +8,6 @@
 #include <limits.h>
 #include <ifaddrs.h>
 
-#define RED "\x1B[31m"
-#define GRN "\x1B[32m"
-#define YEL "\x1B[33m"
-#define BLU "\x1B[34m"
-#define MAG "\x1B[35m"
-#define CYN "\x1B[36m"
-#define WHT "\x1B[37m"
-
 #include "functions.h"
 
 int learning = 0;
@@ -24,21 +16,6 @@ int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
 char *ip = "eth0";
-
-char *intern_strings[] = {
-    "cd",
-    "help",
-    "exit"};
-
-int (*intern_func[])(char **) = {
-    &us_cd,
-    &us_help,
-    &us_exit};
-
-int size_intern_strings()
-{
-  return sizeof(intern_strings) / sizeof(char *);
-}
 
 /**
  * @brief Store input into a buffer which then gets saved into a String
@@ -136,6 +113,7 @@ int execute(char **args)
     return 1;
   }
 
+  // IP Adress
   if (strcmp(args[0], "interface") == 0 && args[1] != NULL)
   {
     if (strcmp(args[1], "tun0") == 0)
@@ -271,7 +249,7 @@ void main_loop()
   // get length of username and hostname
   int hostname_len = strlen(hostname);
   int username_len = strlen(getusername());
-  us_help(NULL);
+  welcome(NULL);
 
   // While status is good (0) read-split into args-execute
   do
