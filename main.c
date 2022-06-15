@@ -16,7 +16,7 @@ int learn_int = 25;
 int pause_int = 5;
 int intervals = 6;
 int time_us = 0;
-char *ip = "eth0";
+char *ip;
 char *line;
 
 char getch()
@@ -155,19 +155,19 @@ int execute(char **args)
   {
     if (strcmp(args[1], "tun0") == 0)
     {
-      ip = "tun0";
+      strcpy(ip, "tun0");
     }
     else if (strcmp(args[1], "wlan0") == 0)
     {
-      ip = "wlan0";
+      strcpy(ip, "wlan0");
     }
     else if (strcmp(args[1], "lo") == 0)
     {
-      ip = "lo";
+      strcpy(ip, "lo");
     }
     else if (strcmp(args[1], "eth0") == 0)
     {
-      ip = "eth0";
+      strcpy(ip, "eth0");
     }
     else
     {
@@ -187,9 +187,7 @@ int execute(char **args)
   // Unimode
   if (strcmp(args[0], "Unimode") == 0 || strcmp(args[0], "unimode") == 0)
   {
-    printf("learning before: %d\n",learning);
     learning = unimode(learning);
-    printf("learning now: %d\n",learning);
     return 1;
   }
 
@@ -207,12 +205,12 @@ int execute(char **args)
     }
     else if (args[1] != NULL && args[2] != NULL)
     {
-      pomodoro(atoi(args[1]), atoi(args[2]), line);
+      pomodoro(atoi(args[1]), atoi(args[2]), line, ip);
       return 1;
     }
     else
     {
-      pomodoro(learn_int, pause_int, line);
+      pomodoro(learn_int, pause_int, line, ip);
       return 1;
     }
   }
@@ -302,12 +300,14 @@ void main_loop()
 int main(int argc, char **argv)
 {
   // Load config files, if any.
+  ip = malloc(sizeof(char) * 6);
+  strcpy(ip, "eth0");
 
   // Run command loop.
   main_loop();
 
   printf("See you later alligator!\n");
   // Perform any shutdown/cleanup.
-
+  free(ip);
   return EXIT_SUCCESS;
 }
