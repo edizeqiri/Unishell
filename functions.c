@@ -98,7 +98,9 @@ int welcome(char **args)
  */
 int unimode(int learning)
 {
-
+   if (access("hosts", F_OK) != 0 && learning == 0) {
+          learning = 1;
+  }
   // if unimode off
   if (learning == 0)
   {
